@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ResponseDTO;
+import com.example.demo.interfaces.GetClient;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,28 +22,28 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/v1/usuario")
 @Slf4j
-public class RestApiController {
+public class RestApiController implements GetClient {
 	
+	private static final String URL = "https://63076d52c0d0f2b8012f51cb.mockapi.io/api/v1/usuarios";
 	
 	@GetMapping("/all")
 	public List<ResponseDTO> getAll() {
 		
-		String url = "https://63076d52c0d0f2b8012f51cb.mockapi.io/api/v1/usuarios";
-		log.info("Inicio petición :  '"+ url +"'");
+		log.info("Inicio petición :  '"+ URL +"'");
 		try {
 			HttpClient cliente = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
-					.uri(URI.create(url))
+					.uri(URI.create(URL))
 					.GET()
 					.build();
 	        	
 			HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
 			if(response.statusCode() != 200) {
 				log.info("Resultado EstatusCode: " + response.statusCode());
-				log.info("Resultado petición : " + url + " = " + response.body() + "\n");
+				log.info("Resultado petición : " + URL + " = " + response.body() + "\n");
 			} else {
 				log.info("Resultado EstatusCode: " + response.statusCode());
-				log.info("Resultado petición : " + url + " = " + response.body() + "\n");
+				log.info("Resultado petición : " + URL + " = " + response.body() + "\n");
 				
 				Gson gson = new Gson();
 				ResponseDTO[] data = gson.fromJson(response.body(), ResponseDTO[].class);
