@@ -5,8 +5,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/usuario")
 @Slf4j
 public class RestApiController {
-		
+	
+	
 	@GetMapping("/all")
-	//@ResponseBody
-	public Optional<HttpResponse<String>> getAll() {
+	public List<ResponseDTO> getAll() {
 		
 		String url = "https://63076d52c0d0f2b8012f51cb.mockapi.io/api/v1/usuarios";
 		log.info("Inicio petición :  '"+ url +"'");
@@ -45,22 +46,20 @@ public class RestApiController {
 				
 				Gson gson = new Gson();
 				ResponseDTO[] data = gson.fromJson(response.body(), ResponseDTO[].class);
-				
-				System.out.println(data[0].getAvatar());
-				System.out.println(data[0].getCreatedAt());
-				System.out.println(data[0].getName());
-				System.out.println(data[0].getId());
-				
+								
 				List<ResponseDTO> list = Arrays.asList(data);
-				//list.stream().filter((i) -> i.getName().contains(url) )
+				List<ResponseDTO> filterList = list.stream()
+						.filter((i) -> i.getName().contains("Mitchell") || i.getName().contains("Harris"))
+						.map(i->i)
+						.collect(Collectors.toList());
 				
+				List<ResponseDTO> orderList = filterList.stream().sorted(Comparator.comparing(ResponseDTO::getId)).map(i->i).collect(Collectors.toList());
+				return orderList;
 				
-		        return Optional.of(response);
 			}
 		} catch (Exception e) {
 			log.error("Error en la llamada: ", e);
 		}
-		return Optional.empty();
-		
+		return null;
 	}
 }
