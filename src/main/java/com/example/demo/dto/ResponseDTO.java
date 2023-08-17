@@ -5,13 +5,13 @@ public class ResponseDTO {
 	private String createdAt;
 	private String name;
 	private String avatar;
-	private String id;
+	private int id;
 
 	public ResponseDTO() {
 
 	}
 
-	public ResponseDTO(String createdAt, String name, String avatar, String id) {
+	public ResponseDTO(String createdAt, String name, String avatar, int id) {
 		super();
 		this.createdAt = createdAt;
 		this.name = name;
@@ -43,11 +43,11 @@ public class ResponseDTO {
 		this.avatar = avatar;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
