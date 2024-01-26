@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/test-practico/v1")
+@RequestMapping(value = "/v1")
 @RequiredArgsConstructor
 public class UsersController {
 
